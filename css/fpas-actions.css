@@ -1,0 +1,129 @@
+/* ==========================================================================
+   FPAS Actions Column Styles (File Attach, Nil, Clear)
+   ========================================================================== */
+
+.fpas-actions-col-th {
+  background: #bdd7ee !important;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  width: 66px;
+  font-size: 10.5pt;
+  padding: 4px 2px;
+}
+
+.fpas-action-cell {
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px 2px;
+  width: 66px;
+  box-sizing: border-box;
+}
+
+.fpas-row-action-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.fpas-btn-action {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  background-color: #1e5ba8;
+  color: #ffffff;
+  border: 1px solid #164684;
+  border-radius: 4px;
+  padding: 3px 2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  transition: background-color 0.15s ease, transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.fpas-btn-action:hover {
+  background-color: #164684;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+
+.fpas-btn-action:active {
+  background-color: #0f3362;
+  transform: scale(0.96);
+}
+
+.fpas-btn-action .fpas-btn-icon {
+  font-size: 14px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.fpas-btn-action .fpas-btn-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.fpas-btn-action.btn-clear {
+  width: 34px;
+  padding: 3px 0;
+}
+
+.fpas-btn-action.btn-clear .fpas-btn-icon {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+/* Attached file badge */
+.fpas-file-badge {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 9px;
+  color: #0369a1;
+  max-width: 62px;
+  box-sizing: border-box;
+}
+
+.fpas-file-badge .file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 44px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.fpas-file-badge .file-del {
+  cursor: pointer;
+  color: #ef4444;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 0 2px;
+}
+
+.fpas-file-badge .file-del:hover {
+  color: #b91c1c;
+}
+
+/* Print exact: hide entire column when printing */
+@media print {
+  .fpas-actions-col-th,
+  .fpas-action-cell {
+    display: none !important;
+  }
+}
