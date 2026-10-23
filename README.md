@@ -1,16 +1,15 @@
 # Faculty Performance Appraisal Portal
 
-A unified, institutional web application hosting three distinct Faculty Performance Appraisal systems for **Manakula Vinayagar Institute of Technology**:
+A unified, institutional web application hosting two distinct Faculty Performance Appraisal systems for **Manakula Vinayagar Institute of Technology**:
 
-1. **Faculty Annual Performance Appraisal Form (FPAS — 700 Marks)** (Base Module)
-2. **Faculty Performance Appraisal Report (PAR — FPI System)** (Module 2)
-3. **Faculty Target Achievement Report (TAR — 600 Marks)** (Module 3)
+1. **Faculty Annual Performance Appraisal Form (FPAS — 700 Marks)** (Existing Module)
+2. **Faculty Performance Appraisal Report (PAR — FPI System)** (New Module)
 
 ---
 
 ## 🏛️ System Overview
 
-The application features a seamless top-level module switcher allowing authorized faculty, department heads, and administrators to access all three appraisal frameworks without losing in-memory data, entered values, or calculations.
+The application features a seamless top-level module switcher allowing authorized faculty, department heads, and administrators to access both appraisal frameworks without losing in-memory data, entered values, or calculations.
 
 ### Module 1: Faculty Annual Performance Appraisal Form (FPAS)
 - **Scoring Framework**: 700 marks total across 8 institutional contribution areas (Academic, Student Centric, Faculty Self Development, R&D, Extension, Department Centric, Institution Centric, and Awards/Achievements).
@@ -39,29 +38,8 @@ The application features a seamless top-level module switcher allowing authorize
   - Section 7.0 Verification of Information (Yes / No).
   - Section 8.0 HOD Remarks, signature, and date.
   - Approval moves status to `Verified`.
-  - Rejection requires mandatory remarks, moving status to `Returned for Correction`.
+  - Rejection requires mandatory remarks, moving status to `Returned for Correction`. Faculty can update and resubmit (`Resubmitted`) while preserving the complete audit trail.
 - **Print & PDF Export**: Exact reproduction of the official 7-page institutional paper format with clean typography, bordered tables, mathematical formula breakdowns, and signature lines.
-
-### Module 3: Faculty Target Achievement Report (TAR — 2024-25)
-- **Scoring Framework**: 600 marks total across 6 sections with 39 parameters.
-  - Section I. Academic contribution (Params 1–10, Max 150)
-  - Section II. Students centric (Params 11–17, Max 100)
-  - Section III. Faculty self development (Params 18–21, Max 50)
-  - Section IV. Research and development (Params 22–28, Max 100)
-  - Section V. Department centric (Params 29–34, Max 100)
-  - Section VI. Institution centric (Params 35–39, Max 100)
-- **Calculation Rules**:
-  - Pure deterministic math engine in `js/tar-calc.js`.
-  - Clamping: Claimed marks capped at parameter maximum ($\min(c_p, m_p)$) with live warning.
-  - Evidence checks: Flags marks claimed > 0 without evidence or marked as "Nil".
-  - Total & Percentage: $T = \sum S_s$, $\text{Percentage} = \frac{T}{600} \times 100$.
-  - Reference fixture (P. Suganya): Yields section totals `110, 90, 30, 40, 15, 50 = 335 / 600 (55.83%)`.
-- **Key Features**:
-  - Sticky live summary bar with grand score box, percentage, answered count, and clickable section jump chips.
-  - Collapsible section cards with responsive tables and expanding evidence textareas.
-  - LocalStorage report persistence (`tar_reports_v1`) + IndexedDB evidence attachment store (`tar_evidence_storage_v1`).
-  - JSON Export & Import with schema validation.
-  - Paper A4 print layout with college header, signature lines, and `@media print` rules.
 
 ---
 
@@ -69,24 +47,17 @@ The application features a seamless top-level module switcher allowing authorize
 
 ```
 anual_form/
-├── Faculty_Appraisal_Form.html     # Unified portal & FPAS module entry point (synced)
-├── index.html                      # Standard web entry point (synced)
+├── Faculty_Appraisal_Form.html     # Unified portal & FPAS module entry point
+├── index.html                      # Standard web entry point
 ├── css/
-│   ├── par.css                     # Responsive design system & print styles for PAR
-│   └── tar.css                     # Scoped design system & print styles for TAR
+│   └── par.css                     # Responsive design system & print styles for PAR
 ├── js/
-│   ├── module-switcher.js          # Top navbar & seamless module switcher (FPAS / PAR / TAR)
-│   ├── par-calc.js                 # Pure calculation engine for PAR (FPI)
-│   ├── par-storage.js              # Persistence (LocalStorage & IndexedDB for PAR)
+│   ├── par-calc.js                 # Pure deterministic mathematical calculation engine
+│   ├── par-storage.js              # Persistence (LocalStorage & IndexedDB for evidence)
 │   ├── par-app.js                  # PAR dashboard, editor, repeater, and HOD controller
-│   ├── tar-scheme.js               # 2024-25 TAR Scheme Definition (39 params, 600 marks)
-│   ├── tar-sample.js               # Reference test fixture (P. Suganya, 335 marks, 55.83%)
-│   ├── tar-calc.js                 # Pure calculation & validation engine for TAR
-│   ├── tar-storage.js              # Persistence (LocalStorage & IndexedDB for TAR)
-│   └── tar-app.js                  # TAR reactive form, live recalculations & print controller
+│   └── module-switcher.js          # Top navbar & seamless module switcher
 ├── test/
-│   ├── par-test.js                 # Automated PAR test suite (16 tests)
-│   └── tar-test.js                 # Automated TAR test suite (11 tests)
+│   └── par-test.js                 # Automated unit and regression test suite
 └── README.md                       # Documentation
 ```
 
@@ -94,24 +65,28 @@ anual_form/
 
 ## 🧪 Automated Testing
 
-Run the built-in Node.js automated test suites:
+Run the built-in Node.js automated test suite:
 
 ```bash
-# Run both test suites:
-node --test test/par-test.js test/tar-test.js
+node --test test/par-test.js
 ```
 
-### Verified TAR Test Cases:
-1. The scheme loads with 6 sections, 39 parameters, and 600 total, and each section parameter maxima add to its stated total.
-2. A blank report has all 39 entries unanswered and a total of 0.
-3. The sample file gives section totals `110, 90, 30, 40, 15, 50`, grand total `335`, and `55.83%`.
-4. A claim above the maximum is clamped, and a negative or non-numeric claim is rejected.
-5. `null` (unanswered) and `0` (Nil) are counted differently in the answered count.
-6. Evidence warnings fire for marks above 0 with empty or "Nil" evidence, and never block saving.
-7. Save, reload, edit and delete round-trip without losing data.
-8. Import rejects a file with a wrong schemeVersion or an out-of-range mark.
-9. Both HTML entry points contain the TAR container, nav button and script tags, and stay identical.
-10. The FPAS 700-mark calculations and all 16 PAR tests still pass (regression).
+### Verified Test Cases:
+1. Module creation and blank report structure.
+2. Faculty information and repeatable activity records save and reload correctly.
+3. Adding, editing, and deleting activity rows without data loss.
+4. Academic Index formula verification (`I 1.1` and `I 1.0`).
+5. Research Index formula with official weights (`0.1, 0.2, 0.3, 0.2, 0.2`).
+6. FPI exact calculation (`4.274` for reference inputs).
+7. Weight configurations isolation and designation validation.
+8. Missing configuration and invalid weights reporting.
+9. Transparent arithmetic average calculation and source discrepancy handling.
+10. Input validation (bounds, numeric constraints, negative weights).
+11. Supporting evidence file metadata and IndexedDB association.
+12. HOD verification workflow (approval, return for correction, resubmission, audit history).
+13. Reference sample loader reproducing full 7-page document state.
+14. HTML entry points synchronization.
+15. Existing FPAS calculations (700 marks denominator) preservation.
 
 ---
 
@@ -122,4 +97,4 @@ Simply open `index.html` or `Faculty_Appraisal_Form.html` in any modern web brow
 ```bash
 python -m http.server 8085
 ```
-Then navigate to: `http://localhost:8085/#tar` or click the **🎯 TAR Report (600 Marks)** tab in the top navigation bar.
+Then navigate to: `http://localhost:8085/`

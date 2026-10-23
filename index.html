@@ -252,13 +252,11 @@
         border: none; border-bottom: 1px solid #000; background: transparent;
       }
       textarea.write-area { border: 1px solid #000; background: transparent; }
-      body.active-module-fpas #module-par-container, body.active-module-fpas #module-tar-container { display: none !important; }
-      body.active-module-par #module-fpas-container, body.active-module-par #module-tar-container { display: none !important; }
-      body.active-module-tar #module-fpas-container, body.active-module-tar #module-par-container { display: none !important; }
+      body.active-module-fpas #module-par-container { display: none !important; }
+      body.active-module-par #module-fpas-container { display: none !important; }
     }
   </style>
   <link rel="stylesheet" href="css/par.css" />
-  <link rel="stylesheet" href="css/tar.css" />
 </head>
 <body>
 
@@ -280,10 +278,6 @@
       <button id="btn-nav-par" class="app-module-btn active" onclick="AppModuleSwitcher.switchTo('par')" type="button">
         <span>📑 PAR Module (FPI System)</span>
         <span class="app-module-badge">New PAR</span>
-      </button>
-      <button id="btn-nav-tar" class="app-module-btn" onclick="AppModuleSwitcher.switchTo('tar')" type="button">
-        <span>🎯 TAR Report (600 Marks)</span>
-        <span class="app-module-badge">New TAR</span>
       </button>
     </div>
     <div class="app-role-selector">
@@ -1278,10 +1272,6 @@
 <div id="par-modal-container"></div>
 <!-- ============================================================ END MODULE 2: PAR -->
 
-<!-- ============================================================ MODULE 3: TAR MODULE -->
-<div id="module-tar-container" class="tar-module-root" style="display:none;"></div>
-<!-- ============================================================ END MODULE 3: TAR -->
-
 <script>
   let toastTimeout;
   function showScoreToast(max) {
@@ -1426,17 +1416,10 @@
 <script src="js/par-calc.js"></script>
 <script src="js/par-storage.js"></script>
 <script src="js/par-app.js"></script>
-<!-- Load TAR Module Scripts -->
-<script src="js/tar-scheme.js"></script>
-<script src="js/tar-sample.js"></script>
-<script src="js/tar-calc.js"></script>
-<script src="js/tar-storage.js"></script>
-<script src="js/tar-app.js"></script>
 <script src="js/module-switcher.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     if (window.ParApp) ParApp.init();
-    if (window.TarApp) TarApp.init();
     if (window.AppModuleSwitcher) AppModuleSwitcher.initSwitcher();
   });
 </script>
