@@ -409,6 +409,18 @@
     }
 
     saveAllReports(reports);
+
+    // Asynchronous Cloud Sync if Supabase is configured
+    try {
+      if (typeof window !== 'undefined' && window.ParSupabase && window.ParSupabase.isConfigured()) {
+        window.ParSupabase.syncReportToCloud(report).catch(err => {
+          console.warn('[Supabase] Background sync failed:', err);
+        });
+      }
+    } catch (e) {
+      /* ignore background sync error */
+    }
+
     return report;
   }
 
@@ -426,6 +438,18 @@
 
     const filtered = reports.filter(r => r.id !== reportId);
     saveAllReports(filtered);
+
+    // Asynchronous Cloud Delete if Supabase is configured
+    try {
+      if (typeof window !== 'undefined' && window.ParSupabase && window.ParSupabase.isConfigured()) {
+        window.ParSupabase.deleteReportFromCloud(reportId).catch(err => {
+          console.warn('[Supabase] Background delete failed:', err);
+        });
+      }
+    } catch (e) {
+      /* ignore background delete error */
+    }
+
     return { success: true };
   }
 

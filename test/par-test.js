@@ -335,4 +335,30 @@ test('PAR Module & Calculation Engine Test Suite', async (t) => {
     assert.equal(sections[7].max, 50);
   });
 
+  await t.test('16. Supabase client module exports and configuration persistence', () => {
+    const ParSupabase = require('../js/supabase-client.js');
+    assert.ok(ParSupabase, 'ParSupabase module must export properly');
+    assert.equal(typeof ParSupabase.getConfig, 'function');
+    assert.equal(typeof ParSupabase.saveConfig, 'function');
+    assert.equal(typeof ParSupabase.isConfigured, 'function');
+    assert.equal(typeof ParSupabase.testConnection, 'function');
+    assert.equal(typeof ParSupabase.syncReportToCloud, 'function');
+    assert.equal(typeof ParSupabase.fetchReportsFromCloud, 'function');
+    assert.equal(typeof ParSupabase.deleteReportFromCloud, 'function');
+    assert.equal(typeof ParSupabase.syncFpasToCloud, 'function');
+    assert.equal(typeof ParSupabase.uploadEvidence, 'function');
+  });
+
+  await t.test('17. Supabase SQL schema file validation', () => {
+    const schemaPath = path.join(__dirname, '..', 'supabase', 'schema.sql');
+    assert.ok(fs.existsSync(schemaPath), 'supabase/schema.sql must exist');
+    const content = fs.readFileSync(schemaPath, 'utf8');
+    assert.ok(content.includes('CREATE TABLE IF NOT EXISTS public.par_reports'), 'schema must create par_reports');
+    assert.ok(content.includes('CREATE TABLE IF NOT EXISTS public.par_weight_configs'), 'schema must create par_weight_configs');
+    assert.ok(content.includes('CREATE TABLE IF NOT EXISTS public.fpas_records'), 'schema must create fpas_records');
+    assert.ok(content.includes('appraisal-evidence'), 'schema must configure appraisal-evidence storage bucket');
+    assert.ok(content.includes('ENABLE ROW LEVEL SECURITY'), 'schema must configure RLS');
+  });
+
 });
+

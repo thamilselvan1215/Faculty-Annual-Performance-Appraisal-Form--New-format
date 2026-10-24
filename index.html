@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Faculty Annual Performance Appraisal Form (FPAS)</title>
+  <link rel="icon" type="image/png" href="images/mvit-logo.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -265,7 +266,9 @@
 <nav class="app-global-navbar no-print">
   <div class="app-global-navbar-inner">
     <div class="app-brand">
-      <div class="app-brand-icon">🏛️</div>
+      <div class="app-brand-icon">
+        <img src="images/mvit-logo.png" alt="Manakula Vinayagar Institute of Technology" class="app-brand-logo" />
+      </div>
       <div class="app-brand-text">
         <h1>MANAKULA VINAYAGAR INSTITUTE OF TECHNOLOGY</h1>
         <p>Faculty Performance Appraisal Portal</p>
@@ -1099,11 +1102,11 @@
           <button class="par-btn par-btn-primary" onclick="ParApp.createNewReport()">
             ➕ Create New Appraisal Report
           </button>
-          <button class="par-btn par-btn-secondary" onclick="ParApp.loadSampleReport()" title="Load exact sample data from MVIT reference document (Suganya - FPI 4.274)">
-            ✨ Load Reference Sample (Suganya - 4.274 FPI)
-          </button>
           <button class="par-btn par-btn-secondary" onclick="ParApp.openWeightsManagerModal()">
             ⚖️ Designation Weights
+          </button>
+          <button class="par-btn par-btn-secondary" onclick="ParSupabaseUI.openModal()" title="Supabase Cloud Database & Storage">
+            ⚡ Supabase Cloud
           </button>
         </div>
       </div>
@@ -1412,6 +1415,12 @@
     alert('Scores calculated and filled in Part E!');
   }
 </script>
+
+<!-- Supabase SDK & Cloud Modules -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/supabase-ui.js"></script>
 
 <!-- Load PAR Module Scripts -->
 <script src="js/par-calc.js"></script>
